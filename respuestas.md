@@ -30,3 +30,7 @@ Para devolver un `400` claro ("no existe ese monitor"), porque el error es del c
 
 Porque la petición está bien hecha (id válido y la clase existe), pero choca con el estado actual de los datos: tiene reservas. `400` es para cuando el cliente envía algo mal; `409` es conflicto con lo que ya hay.
 
+## Pregunta 5
+
+Lleva `{ "sub": 1, "iat": ..., "exp": ... }`: el id del usuario, cuándo se creó y cuándo caduca. El rol no se mete porque el token no se puede cambiar hasta que caduca: si le cambias el rol a alguien en la base de datos, su token seguiría diciendo el rol viejo. Además el payload se lee sin la clave (solo va en base64), así que mejor meter lo mínimo.
+
