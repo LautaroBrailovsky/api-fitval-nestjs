@@ -10,12 +10,14 @@ import {
   UseGuards,
   Version,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 import { StaffGuard } from '../auth/staff.guard';
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { ListClassesQueryDto } from './dto/list-classes-query.dto';
 
+@ApiTags('classes') // agrupa estas rutas en Swagger
 @Controller('classes') // rutas /api/classes
 export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
@@ -38,12 +40,14 @@ export class ClassesController {
 
   @Post() // POST /api/classes → 201 (solo staff)
   @UseGuards(AuthGuard, StaffGuard)
+  @ApiBearerAuth() // en Swagger: necesita token (sale un candado)
   create(@Body() dto: CreateClassDto) {
     return this.classesService.create(dto);
   }
 
   @Delete(':id') // DELETE /api/classes/8 → 200, 404 o 409 (solo staff)
   @UseGuards(AuthGuard, StaffGuard)
+  @ApiBearerAuth() // en Swagger: necesita token (sale un candado)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.classesService.remove(id);
   }

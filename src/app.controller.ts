@@ -1,6 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Pool } from 'pg';
 
+@ApiTags('health') // agrupa estas rutas en Swagger
 @Controller()
 export class AppController {
   constructor(private readonly pool: Pool) {} // NestJS nos da el Pool
