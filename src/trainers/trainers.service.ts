@@ -16,7 +16,7 @@ export class TrainersService {
   async findOne(id: number): Promise<Trainer> {
     // JOIN de las tres tablas: una fila por especialidad
     const result = await this.pool.query<TrainerRow>(
-      `SELECT t.id, t.name, t.email, s.name AS specialty
+      `SELECT t.id, t.name, t.email, t.photo_url, s.name AS specialty
        FROM trainers t
        JOIN trainer_specialties ts ON ts.trainer_id = t.id
        JOIN specialties s ON s.id = ts.specialty_id
@@ -81,5 +81,14 @@ export class TrainersService {
     } finally {
       client.release(); // devolvemos la conexión al Pool, pase lo que pase
     }
+  }
+
+  // Guarda la dirección de la foto y devuelve el monitor completo
+  async setPhoto(id: number, photoUrl: string): Promise<Trainer> {
+    await this.pool.query('UPDATE trainers SET photo_url = $1 WHERE id = $2', [
+      photoUrl,
+      id,
+    ]);
+    return this.findOne(id);
   }
 }
