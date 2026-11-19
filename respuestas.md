@@ -34,3 +34,7 @@ Porque la petición está bien hecha (id válido y la clase existe), pero choca 
 
 Lleva `{ "sub": 1, "iat": ..., "exp": ... }`: el id del usuario, cuándo se creó y cuándo caduca. El rol no se mete porque el token no se puede cambiar hasta que caduca: si le cambias el rol a alguien en la base de datos, su token seguiría diciendo el rol viejo. Además el payload se lee sin la clave (solo va en base64), así que mejor meter lo mínimo.
 
+## Pregunta 6
+
+Porque el `StaffGuard` no mira el rol en el token: con el `sub` busca al usuario en la base de datos en cada petición y ve el rol actual (`staff`). Si el rol fuera dentro del token, seguiría diciendo `member` hasta que hiciera login otra vez (y al revés: si le quitas el `staff`, podría seguir creando clases hasta que caducara el token).
+
