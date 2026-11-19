@@ -42,3 +42,7 @@ Porque el `StaffGuard` no mira el rol en el token: con el `sub` busca al usuario
 
 No necesita PostgreSQL porque le pasamos un `Pool` falso: `query` responde lo que le decimos con `mockResolvedValue`, así que solo probamos la lógica del servicio (si lanza el `400` y si hace o no el `INSERT`). Lo que no puede comprobar es que el SQL esté bien escrito ni que funcione contra la base de datos real (columnas, `JOIN`, claves ajenas...).
 
+## Pregunta 8
+
+Porque cada ejecución registra un usuario nuevo y el email es `UNIQUE`. Con un correo fijo, la segunda vez el registro daría `409` y los tests que dependen de ese usuario fallarían (o habría que borrar el usuario a mano antes de cada ejecución).
+
