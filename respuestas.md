@@ -46,3 +46,7 @@ No necesita PostgreSQL porque le pasamos un `Pool` falso: `query` responde lo qu
 
 Porque cada ejecución registra un usuario nuevo y el email es `UNIQUE`. Con un correo fijo, la segunda vez el registro daría `409` y los tests que dependen de ese usuario fallarían (o habría que borrar el usuario a mano antes de cada ejecución).
 
+## Pregunta 9
+
+Porque lo que va dentro del `${...}` nunca es el texto del cliente: el DTO solo deja pasar `startsAt`, `activity` o `spots` (`@IsIn`), y luego lo cambiamos por una columna de nuestra tabla `SORT_COLUMNS`. Con `?sort=id;DROP TABLE classes` el `ValidationPipe` responde `400` ("sort must be one of the following values...") y el SQL ni se ejecuta.
+
