@@ -22,3 +22,11 @@ Con la versión mala salen las 7 clases; con `$1` sale 0. En la mala, a PostgreS
 
 La comilla cierra el texto, `OR 1=1` es siempre verdad y `--` comenta el resto, así que devuelve todo. Con `$1` el valor va aparte y PostgreSQL lo trata solo como texto, nunca como SQL.
 
+## Pregunta 3
+
+Para devolver un `400` claro ("no existe ese monitor"), porque el error es del cliente. Si no lo comprobáramos, el `INSERT` fallaría por la clave ajena y el cliente recibiría un `500`, como si fuera culpa nuestra.
+
+## Pregunta 4
+
+Porque la petición está bien hecha (id válido y la clase existe), pero choca con el estado actual de los datos: tiene reservas. `400` es para cuando el cliente envía algo mal; `409` es conflicto con lo que ya hay.
+
