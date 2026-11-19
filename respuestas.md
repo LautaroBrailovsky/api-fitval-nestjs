@@ -50,3 +50,7 @@ Porque cada ejecución registra un usuario nuevo y el email es `UNIQUE`. Con un 
 
 Porque lo que va dentro del `${...}` nunca es el texto del cliente: el DTO solo deja pasar `startsAt`, `activity` o `spots` (`@IsIn`), y luego lo cambiamos por una columna de nuestra tabla `SORT_COLUMNS`. Con `?sort=id;DROP TABLE classes` el `ValidationPipe` responde `400` ("sort must be one of the following values...") y el SQL ni se ejecuta.
 
+## Pregunta 10
+
+Porque en el login es donde alguien puede probar contraseñas una detrás de otra (ataque de fuerza bruta). Con 5 intentos por minuto se vuelve lentísimo. Sin `trust proxy`, en Render todas las peticiones parecerían venir de la IP del proxy de Render, así que todos los usuarios compartirían el mismo límite y unos pocos bloquearían a todo el mundo.
+

@@ -3,6 +3,8 @@ import {
   ValidationPipe,
   VersioningType,
 } from '@nestjs/common';
+import helmet from 'helmet';
+import { AllExceptionsFilter } from './common/all-exceptions.filter';
 
 // La configuración de la app, en un solo sitio.
 // La usan main.ts y los tests, para que todos funcionen igual.
@@ -24,4 +26,10 @@ export function configureApp(app: INestApplication) {
       transform: true, // aplica las transformaciones del DTO (como el trim)
     }),
   );
+
+  // Cabeceras de seguridad en todas las respuestas (y quita X-Powered-By)
+  app.use(helmet());
+
+  // Todos los errores con la misma forma
+  app.useGlobalFilters(new AllExceptionsFilter());
 }

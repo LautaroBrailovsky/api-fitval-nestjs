@@ -8,6 +8,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { UsersService } from '../users/users.service';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
@@ -29,6 +30,7 @@ export class AuthController {
 
   @Post('login') // POST /api/auth/login → 200 (no crea nada)
   @HttpCode(200)
+  @Throttle({ default: { limit: 5, ttl: 60_000 } }) // aquí, solo 5 por minuto
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }
