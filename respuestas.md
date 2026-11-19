@@ -38,3 +38,7 @@ Lleva `{ "sub": 1, "iat": ..., "exp": ... }`: el id del usuario, cuándo se cre�
 
 Porque el `StaffGuard` no mira el rol en el token: con el `sub` busca al usuario en la base de datos en cada petición y ve el rol actual (`staff`). Si el rol fuera dentro del token, seguiría diciendo `member` hasta que hiciera login otra vez (y al revés: si le quitas el `staff`, podría seguir creando clases hasta que caducara el token).
 
+## Pregunta 7
+
+No necesita PostgreSQL porque le pasamos un `Pool` falso: `query` responde lo que le decimos con `mockResolvedValue`, así que solo probamos la lógica del servicio (si lanza el `400` y si hace o no el `INSERT`). Lo que no puede comprobar es que el SQL esté bien escrito ni que funcione contra la base de datos real (columnas, `JOIN`, claves ajenas...).
+
