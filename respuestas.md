@@ -54,3 +54,7 @@ Porque lo que va dentro del `${...}` nunca es el texto del cliente: el DTO solo 
 
 Porque en el login es donde alguien puede probar contraseñas una detrás de otra (ataque de fuerza bruta). Con 5 intentos por minuto se vuelve lentísimo. Sin `trust proxy`, en Render todas las peticiones parecerían venir de la IP del proxy de Render, así que todos los usuarios compartirían el mismo límite y unos pocos bloquearían a todo el mundo.
 
+## Pregunta 11
+
+Sin la transacción la API respondió `400`, pero Óscar se quedó guardado en `trainers` y también su primera especialidad (Fuerza); la 99 no, porque ahí saltó el error. Quedó a medias: con `GET /api/v1/trainers/:id` salía con solo `["Fuerza"]`. Nuria no tiene el id 5 porque el intento anterior con `[2, 99]` hizo un `INSERT` que gastó el 5 aunque luego se deshizo con el `ROLLBACK`: los ids `IDENTITY` no vuelven atrás.
+
