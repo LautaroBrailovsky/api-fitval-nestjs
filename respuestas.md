@@ -58,3 +58,6 @@ Porque en el login es donde alguien puede probar contraseñas una detrás de otr
 
 Sin la transacción la API respondió `400`, pero Óscar se quedó guardado en `trainers` y también su primera especialidad (Fuerza); la 99 no, porque ahí saltó el error. Quedó a medias: con `GET /api/v1/trainers/:id` salía con solo `["Fuerza"]`. Nuria no tiene el id 5 porque el intento anterior con `[2, 99]` hizo un `INSERT` que gastó el 5 aunque luego se deshizo con el `ROLLBACK`: los ids `IDENTITY` no vuelven atrás.
 
+## Pregunta 12
+
+Después del *Deploy latest commit* la foto da `404`, pero `GET /api/v1/trainers/1` sigue devolviendo el mismo `photoUrl`. El fichero estaba en la carpeta `uploads/` del disco del servidor, y en el plan gratis de Render ese disco se borra en cada despliegue (o cuando la API se duerme); la base de datos (Supabase) sí se conserva, por eso queda la dirección apuntando a nada. Las fotos habría que guardarlas fuera de la API, en un servicio de ficheros como Supabase Storage (o S3), y guardar en la base de datos su URL pública.
