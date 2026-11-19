@@ -1,6 +1,7 @@
 import { existsSync } from 'node:fs';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { configureApp } from './app.config';
 import { AppModule } from './app.module';
 
@@ -18,6 +19,16 @@ async function bootstrap() {
 
   // Archivos tal cual: las fotos de los monitores en /uploads/...
   app.useStaticAssets('uploads', { prefix: '/uploads' });
+
+  // Documentación en http://localhost:3000/docs
+  const config = new DocumentBuilder()
+    .setTitle('API de FitVal') // título de la página
+    .setDescription('Planes, clases, monitores, registro y login del gimnasio')
+    .setVersion('1.0')
+    .addBearerAuth() // la API usa tokens "Bearer"
+    .build();
+  const document = SwaggerModule.createDocument(app, config); // lee controladores y DTO
+  SwaggerModule.setup('docs', app, document); // publica la página en /docs
 
   await app.listen(process.env.PORT ?? 3000);
 }

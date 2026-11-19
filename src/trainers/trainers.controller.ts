@@ -12,6 +12,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '../auth/auth.guard';
 import { StaffGuard } from '../auth/staff.guard';
@@ -30,6 +31,7 @@ const photoPipe = new ParseFilePipe({
   ],
 });
 
+@ApiTags('trainers') // agrupa estas rutas en Swagger
 @Controller('trainers') // rutas /api/v1/trainers
 export class TrainersController {
   constructor(
@@ -44,6 +46,7 @@ export class TrainersController {
 
   @Post() // POST /api/v1/trainers → 201 (solo staff)
   @UseGuards(AuthGuard, StaffGuard)
+  @ApiBearerAuth() // en Swagger: necesita token (sale un candado)
   create(@Body() dto: CreateTrainerDto) {
     return this.trainersService.create(dto);
   }
@@ -51,6 +54,7 @@ export class TrainersController {
   // POST /api/v1/trainers/1/photo → guarda la foto en uploads/ (solo staff)
   @Post(':id/photo')
   @UseGuards(AuthGuard, StaffGuard)
+  @ApiBearerAuth() // en Swagger: necesita token (sale un candado)
   @UseInterceptors(FileInterceptor('photo')) // el campo del formulario se llama "photo"
   async uploadPhoto(
     @Param('id', ParseIntPipe) id: number,

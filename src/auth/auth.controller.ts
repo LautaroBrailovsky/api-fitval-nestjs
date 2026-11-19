@@ -8,6 +8,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { UsersService } from '../users/users.service';
 import { AuthGuard } from './auth.guard';
@@ -16,6 +17,7 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import type { AuthRequest } from './jwt-payload';
 
+@ApiTags('auth') // agrupa estas rutas en Swagger
 @Controller('auth') // rutas /api/auth
 export class AuthController {
   constructor(
@@ -37,6 +39,7 @@ export class AuthController {
 
   @Get('me') // GET /api/auth/me → los datos del dueño del token
   @UseGuards(AuthGuard)
+  @ApiBearerAuth() // en Swagger: necesita token (sale un candado)
   async me(@Req() request: AuthRequest) {
     // Leemos el usuario de la base de datos: así el rol siempre está al día
     const user = await this.usersService.findById(request.user.sub);
