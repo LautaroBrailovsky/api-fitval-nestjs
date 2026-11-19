@@ -28,7 +28,12 @@ export function configureApp(app: INestApplication) {
   );
 
   // Cabeceras de seguridad en todas las respuestas (y quita X-Powered-By)
-  app.use(helmet());
+  app.use(
+    helmet({
+      // Deja que otra web (un frontend) muestre las fotos de /uploads
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+    }),
+  );
 
   // Todos los errores con la misma forma
   app.useGlobalFilters(new AllExceptionsFilter());

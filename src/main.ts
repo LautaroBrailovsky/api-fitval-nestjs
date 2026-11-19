@@ -14,7 +14,11 @@ async function bootstrap() {
   // así Express ve la IP de verdad de cada cliente
   app.set('trust proxy', 1);
 
-  configureApp(app); // prefijo /api y validación
+  configureApp(app); // prefijo, versiones, validación, helmet y errores
+
+  // Archivos tal cual: las fotos de los monitores en /uploads/...
+  app.useStaticAssets('uploads', { prefix: '/uploads' });
+
   await app.listen(process.env.PORT ?? 3000);
 }
 void bootstrap();
