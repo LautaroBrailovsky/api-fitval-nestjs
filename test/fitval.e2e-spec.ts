@@ -102,4 +102,21 @@ describe('API de FitVal', () => {
 
     expect(response.status).toBe(403);
   });
+
+  it('GET /api/v2/classes?page=1&limit=3 trae 3 clases en data', async () => {
+    const response = await request(app.getHttpServer()).get(
+      '/api/v2/classes?page=1&limit=3',
+    );
+
+    expect(response.status).toBe(200);
+    expect((response.body as { data: unknown[] }).data).toHaveLength(3);
+  });
+
+  it('GET /api/v2/classes?limit=100 responde 400', async () => {
+    const response = await request(app.getHttpServer()).get(
+      '/api/v2/classes?limit=100',
+    );
+
+    expect(response.status).toBe(400);
+  });
 });
