@@ -8,19 +8,27 @@ import {
   Post,
   Query,
   UseGuards,
+  Version,
 } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { StaffGuard } from '../auth/staff.guard';
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
+import { ListClassesQueryDto } from './dto/list-classes-query.dto';
 
 @Controller('classes') // rutas /api/classes
 export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
 
-  @Get() // GET /api/classes?activity=yoga (el filtro es opcional)
+  @Get() // GET /api/v1/classes?activity=yoga → un array, como siempre
   findAll(@Query('activity') activity?: string) {
     return this.classesService.findAll(activity);
+  }
+
+  @Get()
+  @Version('2') // GET /api/v2/classes → { data, total, page, limit, totalPages }
+  findPage(@Query() query: ListClassesQueryDto) {
+    return this.classesService.findPage(query);
   }
 
   @Get(':id') // GET /api/classes/7 → 400 si no es un número
